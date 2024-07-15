@@ -1,27 +1,46 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../App.css'
+import Axios from 'axios'
 
 const Signup = () => {
-  return (
-    <div className='sign-up-container'>
-        
-        <form className='sign-up-from'>
-        <h2>Sign Up</h2>
 
-            <label htmlFor='username'>Username:</label>
-            <input type='text' placeholder='Username'/>
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
-            <label htmlFor='email'>Email:</label>
-            <input type='email' autoComplete='off' placeholder='Email'/>
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        Axios.post('http://localhost:3000/auth/signup', { 
+            username, 
+            email,
+            password, 
+        }).then(response => {
+            console.log(response)
+        }).catch(err => {
+            console.log(err)
+        })
+    };
 
-            <label htmlFor="password">Password:</label>
-            <input type='password' placeholder='******'/>
-            
-            <button type='submit'>Sign Up</button>
+    return (
+        <div className='sign-up-container'>
 
-        </form>
-    </div>
-  )
+            <form className='sign-up-from' onSubmit={handleSubmit}>
+                <h2>Sign Up</h2>
+
+                <label htmlFor='username'>Username:</label>
+                <input type='text' placeholder='Username' onChange={(e) => setUsername(e.target.value)} />
+
+                <label htmlFor='email'>Email:</label>
+                <input type='email' autoComplete='off' placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
+
+                <label htmlFor="password">Password:</label>
+                <input type='password' placeholder='******' onChange={(e) => setPassword(e.target.value)} />
+
+                <button type='submit'>Sign Up</button>
+
+            </form>
+        </div>
+    )
 }
 
 export default Signup
